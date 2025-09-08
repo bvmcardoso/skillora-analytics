@@ -1,4 +1,3 @@
-// src/lib/api.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ApiError, uploadFile, mapColumns, taskStatus, salarySummary, stackCompare } from './api';
 import type { ColumnMap } from './api';

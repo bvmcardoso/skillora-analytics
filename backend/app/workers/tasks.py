@@ -11,8 +11,30 @@ from app.workers.celery_app import celery
 
 CANON: list[str] = ["title", "salary", "currency", "country", "seniority", "stack"]
 
+"""
+Celery tasks for file ingestion and processing.
+
+This module defines the background task that loads uploaded CSV/XLSX files,
+normalizes the data, and inserts valid records into the database. It also
+provides helper functions for loading, cleaning, and tracking task progress.
+"""
+
 
 def _load_dataframe(path: Path) -> pd.DataFrame:
+    """
+    Load a DataFrame from the given file path.
+
+    Supports CSV and Excel formats. Raises an error for unsupported file types.
+
+    Args:
+        path: Path to the file.
+
+    Returns:
+        A pandas DataFrame with the file contents.
+
+    Raises:
+        ValueError: If the file extension is not supported.
+    """
     suf = path.suffix.lower()
     if suf == ".csv":
         return pd.read_csv(path)
@@ -22,6 +44,21 @@ def _load_dataframe(path: Path) -> pd.DataFrame:
 
 
 def _normalize(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Clean and normalize a DataFrame according to the canonical schema.
+
+    - Keeps only canonical columns.
+    - Converts `salary` to numeric and drops invalid rows.
+    - Strips whitespace and fills null values in text columns.
+    - Ensures currency has a default fallback ("USD").
+
+    Args:
+        df: Input DataFrame.
+
+    Returns:
+        A cleaned DataFrame ready for insertion.
+    """
+
     # keep only known columns
     cols: list[str] = [c for c in CANON if c in df.columns]
     df = cast(pd.DataFrame, df.loc[:, cols].copy())
@@ -42,7 +79,17 @@ def _normalize(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def _update_state(self: Any | None, *, state: str, meta: dict) -> None:
-    """Update state when running via Celery; tests (self=None) don't do anything."""
+    """
+    Update Celery task state for progress tracking.
+
+    This is a safe wrapper that skips updates when running in tests
+    (self=None) or when the task instance does not support `update_state`.
+
+    Args:
+        self: Task instance when executed by Celery, None in tests.
+        state: The state string (e.g., STARTED, PROGRESS).
+        meta: A dictionary with metadata for progress reporting.
+    """
     if self is not None and hasattr(self, "update_state"):
         try:
             self.update_state(state=state, meta=meta)
@@ -54,6 +101,29 @@ def _update_state(self: Any | None, *, state: str, meta: dict) -> None:
 def process_file(
     self: Any | None = None, file_id: str = "", column_map: dict | None = None
 ) -> dict:
+    """
+    Celery task: process an uploaded file and insert rows into the database.
+
+    Workflow:
+        1. Load file into a DataFrame (CSV/XLSX supported).
+        2. Validate and rename columns based on `column_map`.
+        3. Normalize the DataFrame (cleaning and default values).
+        4. Insert records into the database in chunks with progress updates.
+        5. Return a summary including file ID, inserted count, total rows, and sample records.
+
+    Args:
+        self: Celery task instance (injected automatically when bound).
+        file_id: Name of the uploaded file in the upload directory.
+        column_map: Mapping of canonical columns to source columns.
+
+    Returns:
+        A dictionary with:
+            - file_id (str): The processed file ID.
+            - inserted (int): Number of rows successfully inserted.
+            - total (int): Total rows parsed after cleaning.
+            - sample (list): First 3 records inserted for inspection.
+            - error/note: Present if file not found, invalid mapping, or no valid rows.
+    """
     uploads = Path(settings.upload_dir)
     path = uploads / file_id
     if not path.exists():

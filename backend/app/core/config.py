@@ -5,6 +5,39 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    """Application settings loaded from environment variables or defaults.
+
+    This class centralizes configuration for the Skillora backend, including
+    database, Redis, authentication, uploads, and CORS. It leverages
+    `pydantic_settings.BaseSettings` to validate and load values from a `.env`
+    file or system environment variables.
+
+
+    Attributes:
+        app_name: Application name.
+        environment: Current environment (e.g., development, staging, production).
+        debug: Enable or disable debug mode.
+        upload_dir: Directory path where uploaded files are stored.
+        db_host: Database hostname.
+        db_port: Database port.
+        db_name: Database name.
+        db_user: Database username.
+        db_password: Database password.
+        database_url_override: Optional full database URL to override derived values.
+        redis_host: Redis hostname.
+        redis_port: Redis port.
+        secret_key: Secret key used for JWT signing.
+        algorithm: Algorithm used for JWT signing (e.g., HS256).
+        access_token_expire_minutes: JWT access token expiration in minutes.
+        cors_origins: Comma-separated list of allowed CORS origins.
+
+    Properties:
+        database_url: Async database URL for application usage.
+        alembic_database_url: Sync database URL for Alembic migrations.
+        redis_url: Redis connection URL.
+        cors_origins_list: Parsed list of allowed CORS origins.
+    """
+
     model_config = SettingsConfigDict(
         env_file="backend/.env", env_prefix="", extra="ignore"
     )
@@ -45,7 +78,7 @@ class Settings(BaseSettings):
         validation_alias="CORS_ORIGINS",
     )
 
-    # URLs derivadas (preferem variáveis diretas se existirem)
+    # Derived urls
     @property
     def database_url(self) -> str:
         # Async para a aplicação
