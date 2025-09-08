@@ -1,6 +1,6 @@
 import { API_BASE, joinUrl } from './env';
 
-/* ========= Public types (camelCase) ========= */
+/** Public types (camelCase) **/
 
 export type ColumnKey = 'title' | 'salary' | 'currency' | 'country' | 'seniority' | 'stack';
 export type ColumnMap = Record<ColumnKey, string>;
@@ -24,7 +24,7 @@ export type TaskStatusResp = {
   result?: unknown;
 };
 
-/* ========= Raw (internal) ========= */
+/** Raw (internal) **/
 
 type RawUploadResponse = { file_id?: string; fileId?: string };
 type RawMapResponse = { task_id?: string; id?: string; taskId?: string };
@@ -52,7 +52,7 @@ export type StackCompareRow = {
   n: number;
 };
 
-/* ========= Small helpers ========= */
+/** Small helpers **/
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type RequestOptions = {
@@ -113,7 +113,7 @@ function normalizeTaskStatus(raw: RawTaskStatus): TaskStatusResp {
   };
 }
 
-/* ========= HTTP (typed, no any) ========= */
+/** HTTP (typed, no any) **/
 
 // Error type carrying status and payload for consistent handling across the app.
 export class ApiError extends Error {
@@ -163,7 +163,7 @@ async function requestJson<T>(
   return (await res.json()) as T;
 }
 
-/* ========= Endpoints ========= */
+/** Endpoints **/
 
 const INGEST = 'api/jobs/ingest';
 const ANALYTICS = 'api/jobs/analytics';

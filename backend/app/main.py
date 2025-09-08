@@ -15,7 +15,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
-    allow_credentials=False,  # deixe True só se usar cookies/aut no navegador
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -44,6 +44,6 @@ async def config():
 async def health(db: Session = Depends(get_db)):
     try:
         db.execute(text("SELECT 1"))
-        return {"message": "ok", "db": "ok"}
+        return {"application": "ok", "db": "ok"}
     except Exception as e:
         return {"message": "ok", "db": f"error {str(e)}"}
