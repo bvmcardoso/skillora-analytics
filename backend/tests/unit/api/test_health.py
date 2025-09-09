@@ -14,5 +14,5 @@ def test_health(client):
     data = resp.json()
 
     assert resp.status_code == status.HTTP_200_OK
-    assert data["message"] == "ok"
+    assert data["application"] == "ok"
     assert data["db"] == "ok"
