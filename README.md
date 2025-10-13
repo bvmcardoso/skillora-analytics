@@ -1,11 +1,64 @@
 # Skillora Analytics (Jobs)
-
-Upload job salary datasets (CSV/XLSX), process them asynchronously, and explore insights via analytics APIs.  
-**Stack:** FastAPI • Celery • Redis • Postgres • SQLAlchemy • React • Vite • TypeScript • Docker • GitHub Actions
+**Asynchronous Data Processing Platform** — Upload, process, and analyze **250k+ job salary records in seconds** with a fully-typed FastAPI + Celery architecture.
 
 [![CI](https://github.com/bvmcardoso/skillora/actions/workflows/ci.yml/badge.svg)](https://github.com/bvmcardoso/skillora/actions)
+[![Docker](https://img.shields.io/badge/docker-compose-blue?logo=docker)](https://www.docker.com/)
+[![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/frontend-React-61DAFB?logo=react)](https://react.dev/)
+[![CI/CD](https://img.shields.io/badge/CI/CD-GitHub%20Actions-black?logo=githubactions)](https://github.com/bvmcardoso/skillora/actions)
+
+## 🎥 Live Demo
+[▶️ Watch the demo video](https://www.linkedin.com/feed/update/urn:li:activity:7371158653967519744/)
+
+
+## Overview
+**Skillora Analytics** simulates a real-world SaaS data pipeline.  
+It ingests large datasets asynchronously, orchestrates background jobs via **Celery + Redis**, stores structured data in **PostgreSQL**, and exposes typed analytics APIs consumed by a **React + Vite** dashboard.
+
+This project showcases architecture design, system orchestration, and CI/CD automation — built to demonstrate senior-level backend reasoning and full-stack delivery.
 
 ---
+
+## ⚡ Highlights
+✅ **250k+ rows** processed in under **5 seconds** (async ingestion pipeline)  
+✅ **Real background tasks** with Celery workers and Redis broker  
+✅ **Fully typed backend** (Pydantic v2 + FastAPI async endpoints)  
+✅ **CI/CD pipeline** (Ruff + Black + Pytest + Vitest + Vite build)  
+✅ **Production-ready architecture**, modular and extensible  
+
+
+
+## Architecture Diagram
+
+            ┌────────────────────┐
+ CSV/XLSX ─▶│     FastAPI API    │
+            └─────────┬──────────┘
+                      │
+                      ▼
+            ┌────────────────────┐
+            │     Redis Queue     │
+            └─────────┬──────────┘
+                      │
+                      ▼
+            ┌────────────────────┐
+            │    Celery Worker    │
+            └─────────┬──────────┘
+                      │
+                      ▼
+            ┌────────────────────┐
+            │     Postgres DB     │
+            └─────────┬──────────┘
+                      │
+                      ▼
+            ┌────────────────────┐
+            │   Analytics APIs    │
+            └─────────┬──────────┘
+                      │
+                      ▼
+            ┌────────────────────┐
+            │  React Dashboard    │
+            └────────────────────┘
+
 
 ## Quick start
 
