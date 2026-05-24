@@ -48,7 +48,7 @@ services:
     env_file:
       - ./backend/.env
     ports:
-      - '8080:8000'
+      - '8180:8000'
       - '5678:5678'
     environment:
       - PYTHONPATH=/app
@@ -81,7 +81,7 @@ services:
     working_dir: /app
     command: sh -lc "npm ci && npm run dev -- --host 0.0.0.0"
     environment:
-      VITE_API_URL: http://localhost:8080
+      VITE_API_BASE: http://localhost:8180
     volumes:
       - ./frontend:/app
       - frontend_node_modules:/app/frontend/node_modules

@@ -32,4 +32,4 @@ EXPOSE 8000
 # Run as root only for the entrypoint to adjust ownership when volumes are mounted
 USER appuser
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
