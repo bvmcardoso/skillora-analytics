@@ -1,10 +1,184 @@
 .uploadWizard {
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-4);
+  padding: var(--space-5) 0;
 
-  &__fileUpload {
-    margin-bottom: var(--space-6);
-    color: var(--color-dark-grey);
+  &__container {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  // ── Page header ────────────────────────────────────────
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  &__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+
+  // ── Step indicators ────────────────────────────────────
+  &__steps {
+    display: flex;
+    align-items: center;
+  }
+
+  &__step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    opacity: 0.4;
+    transition: opacity 0.2s;
+
+    &--active {
+      opacity: 1;
+    }
+
+    &--done {
+      opacity: 0.7;
+    }
+  }
+
+  &__stepDivider {
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+    min-width: var(--space-4);
+  }
+
+  &__stepNum {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #d1d5db;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #9ca3af;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+
+    .uploadWizard__step--active & {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .uploadWizard__step--done & {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+  }
+
+  &__stepLabel {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #9ca3af;
+    white-space: nowrap;
+
+    .uploadWizard__step--active & {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    .uploadWizard__step--done & {
+      color: var(--color-muted);
+    }
+  }
+
+  // ── Content cards ──────────────────────────────────────
+  &__card {
+    background: var(--color-surface);
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-2);
+    padding: var(--space-5);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  &__sectionHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__sectionTitle {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  &__sectionHint {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+
+  // ── File success badge ─────────────────────────────────
+  &__fileSuccess {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: var(--radius-2);
+  }
+
+  &__fileSuccessIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: var(--color-success);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  &__fileSuccessTitle {
+    margin: 0 0 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-text);
+  }
+
+  &__fileId {
+    display: block;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    word-break: break-all;
   }
 }
