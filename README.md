@@ -143,7 +143,7 @@ make migrate-up
 make test
 ```
 
-- API: http://localhost:8080 (`/docs` for OpenAPI)
+- API: http://localhost:8180 (`/docs` for OpenAPI)
 - Frontend: http://localhost:5173
 
 ---
