@@ -51,20 +51,36 @@ function FileUpload({ onUploaded }: Props) {
         return;
       }
       onUploaded(id);
+      toast.success('File uploaded successfully!', { duration: 2000 });
     } catch (err: unknown) {
       if (err instanceof Error) {
         toast.error(err?.message || 'Upload failed');
       }
-    } finally {
-      toast.success('File uploaded successfully!', { duration: 2000 });
     }
   }
 
   return (
     <div className={styles.fileUpload}>
-      <Button accept=".csv,.xls,.xlsx" buttonStyle="default" onFileChange={handleChange}>
-        Upload file
-      </Button>
+      <div className={styles.fileUpload__dropzone}>
+        <svg
+          className={styles.fileUpload__icon}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 16V4m0 0L8 8m4-4 4 4" />
+          <path d="M20 16.5A3.5 3.5 0 0 1 16.5 20h-9A3.5 3.5 0 0 1 4 16.5" />
+        </svg>
+        <p className={styles.fileUpload__title}>Upload your dataset</p>
+        <p className={styles.fileUpload__hint}>CSV, XLS, or XLSX files are supported.</p>
+        <Button accept=".csv,.xls,.xlsx" buttonStyle="default" onFileChange={handleChange}>
+          Choose file
+        </Button>
+      </div>
     </div>
   );
 }
