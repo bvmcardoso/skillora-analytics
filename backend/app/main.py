@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.infrastructure.db import get_db
@@ -9,6 +9,7 @@ from app.jobs.router import router as jobs_router
 from app.users.router import router as users_router
 
 print("Debugpy is listening on port 5678")
+
 
 app = FastAPI()
 
@@ -41,9 +42,9 @@ async def config():
 
 
 @app.get("/health")
-async def health(db: Session = Depends(get_db)):
+async def health(db: AsyncSession = Depends(get_db)):
     try:
-        db.execute(text("SELECT 1"))
+        await db.execute(text("SELECT 1"))
         return {"application": "ok", "db": "ok"}
     except Exception as e:
         return {"message": "ok", "db": f"error {str(e)}"}

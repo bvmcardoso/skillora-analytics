@@ -58,8 +58,8 @@ test: ## Run backend+frontend tests
 	$(MAKE) test-backend
 	$(MAKE) test-frontend
 
-test-backend: ## Pytest (verbose)
-	cd $(BACKEND) && pytest -vv --disable-warnings -ra
+test-backend: ## Pytest unit suite (no DB required)
+	cd $(BACKEND) && pytest -m "not integration" -vv --disable-warnings -ra
 
 test-unit: ## Pytest unit suite (requires @pytest.mark.unit)
 	cd $(BACKEND) && pytest -m unit tests/unit -vv -ra
