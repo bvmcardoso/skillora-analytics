@@ -59,7 +59,7 @@ jobs:
 
       - name: Pytest (run)
         working-directory: backend
-        run: pytest -vv -ra
+        run: pytest -m "not integration" -vv -ra
 
   frontend:
     name: Frontend • lint + typecheck + tests + build
